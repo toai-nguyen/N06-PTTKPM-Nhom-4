@@ -19,7 +19,7 @@
 Ứng dụng được áp dụng với: Cộng đồng sáng tạo nội dung, hỗ trợ độc giả yêu thích văn học, đa dạng mục đích sử dụng.
 Các thành phần người dùng bao gồm: Độc giả, quản trị viên, tác giả và khách truy cập.
 
-Ứng dụng mang lại lợi ích cho xã hội như:  Khuyến khích văn hóa đọc và sáng tạo nội dung, đặc biệt trong cộng đồng trẻ. Tạo một môi trường trực tuyến tích cực và lành mạnh cho việc trao đổi ý tưởng văn học. Góp phần hỗ trợ các tác giả tiềm năng phát triển sự nghiệp thông qua sự tương tác và phản hồi từ độc giả.
+Ứng dụng mang lại lợi ích cho xã hội như: Khuyến khích văn hóa đọc và sáng tạo nội dung, đặc biệt trong cộng đồng trẻ. Tạo một môi trường trực tuyến tích cực và lành mạnh cho việc trao đổi ý tưởng văn học. Góp phần hỗ trợ các tác giả tiềm năng phát triển sự nghiệp thông qua sự tương tác và phản hồi từ độc giả.
 ## Kết quả mong muốn
 
 - Ứng dụng web hoàn chỉnh và ổn định
