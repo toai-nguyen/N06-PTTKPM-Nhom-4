@@ -3,41 +3,61 @@ import SecondaryButton from "./SecondaryButton";
 import ApplicationLogo from "./ApplicationLogo";
 import TextInput from "./TextInput";
 import UserAvatar from "./UserAvatar";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Link, usePage } from "@inertiajs/react";
-import DefaultAvartar from "../../../public/image/default_avatar.jpg";
 import Dropdown from "./Dropdown";
+import image from "../../../public/image/default_avatar.jpg";
 
-export default function NavigatorBar({isLoggedIn, userAvatar, userName}) {
+export default function NavigatorBar({ auth, userName }) {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 0) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
     return (
         <nav
-            className="
-        w-full 
-        bg-white 
-        shadow dark:bg-gray-800
-        h-12"
+            className={`
+                fixed 
+                top-0 
+                h-16
+                vw-85
+
+                transition-colors
+                duration-300 
+                ${isScrolled ? "bg-white" : "bg-transparent"}`}
         >
             <div
                 className="
-            flex
-            items-center
-            justify-between
-            mt-4
-            mx-auto
-            max-w-7xl"
+                flex
+                items-center
+                justify-end
+                h-full
+                px-4
+                "
             >
-                <div>
+                {/* <div>
                     <Link href="/">
                         <ApplicationLogo className="h-10 fill-current text-gray-800" />
                     </Link>
-                </div>
-                {isLoggedIn ? (
-                    <div className="flex items-center space-x-4">
+                </div> */}
+                {auth.user ? (
+                    <div className="flex items-center bg-white space-x-4">
                         <TextInput placeholder="Search" />
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <UserAvatar
-                                    src={DefaultAvartar}
+                                    src={image}
                                     alt={userName}
                                     className="h-10 w-10 cursor-pointer"
                                 />

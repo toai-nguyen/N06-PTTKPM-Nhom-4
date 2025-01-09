@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.width-1-6-vw {
+    width: 15vw;
+}
+.margin-left-15{
+    margin-left: 15vw;
+}
+.vw-85 {
+    width: 85vw;
+}
+@font-face {
+    font-family: 'HYWenHei 85W';
+    src: local('HYWenHei 85W'), url('../../public/genshin_font/zhcn.woff') format('woff');
+}
+.genshin-font{
+    font-family: 'HYWenHei 85W', sans-serif;
+}
