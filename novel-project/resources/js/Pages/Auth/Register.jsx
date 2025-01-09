@@ -102,8 +102,8 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-center">
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                <div className="mt-4">
+                    <PrimaryButton className="mt-4" disabled={processing}>
                         Register
                     </PrimaryButton>
                 </div>
