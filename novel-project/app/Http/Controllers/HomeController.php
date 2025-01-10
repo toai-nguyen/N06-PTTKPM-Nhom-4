@@ -25,4 +25,8 @@ class HomeController extends Controller
     {
         return Inertia::render('Content/ListProject');
     }
+    public function settings()
+    {
+        return Inertia::render('Content/Settings');
+    }
 }

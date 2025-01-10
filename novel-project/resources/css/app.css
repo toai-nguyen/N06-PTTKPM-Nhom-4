@@ -18,3 +18,37 @@
 .genshin-font{
     font-family: 'HYWenHei 85W', sans-serif;
 }
+.bg-genshin-green{
+    color: white;
+    background-color: rgb(147, 213, 106)
+}
+.main-content {
+    margin-bottom: 5vh;
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+    position: relative;
+}
+.cover-image {
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    opacity: 0.3;
+
+}
+.content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.novel-image {
+    width: 30%;
+    height: auto;
+    margin-left: 3vw;
+    object-fit: cover;
+}
+.next-previous {
+    margin-right: 4vw;
+}

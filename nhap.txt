@@ -1,6 +1,5 @@
 List Interface:
 Home page: All Content
-Follow page: List of follow project
 Create project page
 Upload new chapter editor
-User page: user information
+Setting page
