@@ -1,5 +1,6 @@
 List Interface:
 Home page: All Content
 Create project page
+Novel page: show chapter and content
 Upload new chapter editor
 Setting page
