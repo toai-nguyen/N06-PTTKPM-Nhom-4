@@ -21,7 +21,7 @@ class HomeController extends Controller
     {
         return Inertia::render('Content/CreateProject');
     }
-    public function project()
+    public function listProject()
     {
         return Inertia::render('Content/ListProject');
     }

@@ -11,6 +11,6 @@ Route::get('/advanced-search', [HomeController::class, 'advancedSearch'])->name(
 
 Route::get('/create-project', [HomeController::class, 'createProject'] )->name('create-project');
 
-Route::get('/project', [HomeController::class, 'project'])->name('project');
+Route::get('/list-project', [HomeController::class, 'listProject'])->name('list-project');
 
 Route::get('/settings', [HomeController::class, 'settings'])->name('settings');

@@ -46,8 +46,10 @@ export default function Sidebar() {
             </div>
             {isOpen && (
                 <div>
-                    <button className="mb-4 bg-blue-500 text-white py-2 px-4 rounded">
-                        Create
+                    <button  className="mb-4 bg-blue-500 text-white py-2 px-4 rounded">
+                        <Link href={route("create-project")}>
+                            Create
+                        </Link>
                     </button>
                     <div className="w-full">
                         <h2 className="text-lg genshin-font font-semibold mb-2">
@@ -87,14 +89,14 @@ export default function Sidebar() {
                             </li>
                             <li
                                 className={`${getItemClass(
-                                    "create-project"
+                                    "list-project"
                                 )} mb-2`}
                             >
                                 <Link
-                                    href={route("create-project")}
+                                    href={route("list-project")}
                                     className="genshin-font"
                                 >
-                                    Create Project
+                                    Project
                                 </Link>
                             </li>
                             <li className={`${getItemClass("settings")} mb-2`}>
