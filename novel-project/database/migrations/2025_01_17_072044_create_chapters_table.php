@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('novel_id')->constrained('novels')->onDelete('cascade');
             $table->foreignID('author_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
-            $table->text('content');
+            $table->longText('content');
             $table->integer('chapter_number');
             $table->timestamps();
         });

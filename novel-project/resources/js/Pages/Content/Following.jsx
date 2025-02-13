@@ -1,4 +1,4 @@
-import HomeLayout from "@/Layouts/HomeLayout";
+import HomeLayout from "@/Layouts/ParentsLayout";
 import NotAuth from "@/Components/Home/NotAuth";
 import react, { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";

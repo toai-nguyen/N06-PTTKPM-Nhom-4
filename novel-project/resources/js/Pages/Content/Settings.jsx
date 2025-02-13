@@ -1,4 +1,4 @@
-import HomeLayout from '@/Layouts/HomeLayout';
+import HomeLayout from '@/Layouts/ParentsLayout';
 
 export default function Settings() {
     return (

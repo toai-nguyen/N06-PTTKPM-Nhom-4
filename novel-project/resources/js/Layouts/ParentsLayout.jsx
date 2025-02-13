@@ -2,7 +2,7 @@ import NavigatorBar from "@/Components/NavigatorBar";
 import Sidebar from "@/Components/Sidebar";
 import { Link, Head, usePage } from "@inertiajs/react";
 
-export default function Home({ header,children }) {
+export default function ParentsLayout({ header,children }) {
     const { auth } = usePage().props;
     return (
         <div className="flex flex-row">

@@ -1,4 +1,4 @@
-import HomeLayout from "@/Layouts/HomeLayout";
+import HomeLayout from "@/Layouts/ParentsLayout";
 import NotAuth from "@/Components/Home/NotAuth";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";

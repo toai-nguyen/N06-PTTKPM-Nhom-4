@@ -9,10 +9,14 @@ class Novel extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'author_id',
         'title',
         'description',
-        'cover_image',
-        'author',
+        'image_url',
+        'image_public_id',
+        'status',
+        'followers',
+        'number_of_chapters',
     ];
     public function user()
     {
@@ -21,6 +25,10 @@ class Novel extends Model
     public function chapters()
     {
         return $this->hasMany(Chapter::class);
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
 
