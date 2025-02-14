@@ -20,7 +20,11 @@ class Novel extends Model
     ];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author_id');
+    }
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'user_follows')->withTimestamps();
     }
     public function chapters()
     {
@@ -28,7 +32,7 @@ class Novel extends Model
     }
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'novel_tags');
     }
 }
 

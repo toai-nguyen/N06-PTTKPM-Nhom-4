@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function (){
             Route::middleware('web')
             ->group(base_path('routes/home.php'))
-            ->group(base_path('routes/novel.php'));
+            ->group(base_path('routes/novel.php'))
+            ->group(base_path('routes/chapter.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {

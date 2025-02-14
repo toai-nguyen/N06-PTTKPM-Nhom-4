@@ -1,27 +1,14 @@
-import HomeLayout from '@/Layouts/ParentsLayout';
-import { usePage } from '@inertiajs/react';
-import MainContent from '@/Components/Home/MainContent';
-import LatestUpdates from '@/Components/Home/LastestUpdates';
-import Popular from '@/Components/Home/Popular';
 import ParentsLayout from '@/Layouts/ParentsLayout';
-export default function Home({novels}) {
+import Random from '@/Components/Home/Random';
+import LatestUpdate from '@/Components/Home/LastestUpdate';
+import TopNovels from '@/Components/Home/TopNovels';
+export default function Home({topNovels, lastestNovels, randomNovels}) {
     return (
         <ParentsLayout>
-            <div className="p-6 text-gray-900 dark:text-gray-100">
-                <h1>List of stories here</h1>
-                <ul>
-                    {novels.map((novel) => (
-                        <li key={novel.id}>
-                            <h2>{novel.title}</h2>
-                            <img src={novel.image_url} alt="" />
-                        </li>
-                        
-                    ))}
-                </ul>
-                {/* <MainContent />
-                <LatestUpdates />
-                <Popular /> */}
-            </div>
+            {/* passing data to child components */}
+                <TopNovels novels={topNovels} />
+                <LatestUpdate lastest = {lastestNovels} />
+                <Random random = {randomNovels} />
         </ParentsLayout>
     );
 }

@@ -2,27 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.width-1-6-vw {
-    width: 15vw;
-}
-.margin-left-15{
-    margin-left: 15vw;
-}
-.vw-85 {
-    width: 85vw;
-}
+
 @font-face {
     font-family: 'HYWenHei 85W';
     src: local('HYWenHei 85W'), url('../../public/genshin_font/zhcn.woff') format('woff');
 }
-.genshin-font{
+
+* {
     font-family: 'HYWenHei 85W', sans-serif;
 }
-.bg-genshin-green{
-    color: white;
-    background-color: rgb(147, 213, 106)
-}
-.main-content {
+/* .main-content {
     margin-bottom: 5vh;
     width: 100%;
     height: fit-content;
@@ -51,4 +40,4 @@
 }
 .next-previous {
     margin-right: 4vw;
-}
+} */

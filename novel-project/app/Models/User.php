@@ -47,6 +47,10 @@ class User extends Authenticatable
     }
     public function novels()
     {
-        return $this->hasMany(Novel::class);
+        return $this->hasMany(Novel::class, 'author_id');
+    }
+    public function followedNovels()
+    {
+        return $this->belongsToMany(Novel::class, 'user_follows')->withTimestamps();
     }
 }

@@ -13,8 +13,30 @@ class NovelController extends Controller
      */
     public function index()
     {
-        $novels = Novel::all();
-        return Inertia::render('Home', ['novels' => $novels]);
+        $topNovels = Novel::with('tags', 'user')
+        ->orderBy('followers', 'desc')
+        ->take(5)
+        ->get()
+        ->map(function ($novel) {
+            return [
+                'id' => $novel->id,
+                'title' => $novel->title,
+                'description' => $novel->description,
+                'image_url' => $novel->image_url,
+                'tags' => $novel->tags->map(function ($tag) {
+                    return ['id' => $tag->id, 'name' => $tag->tag_name];
+                }),
+                'author_name' => $novel->user->name,
+            ];
+        });
+
+
+        $lastestNovels = Novel::orderBy('created_at', 'desc')->take(10)->get();
+        $randomNovels = Novel::inRandomOrder()->take(10)->get();
+        return Inertia::render('Home', [
+            'topNovels' => $topNovels, 
+            'lastestNovels' => $lastestNovels,
+            'randomNovels' => $randomNovels]);
     }
 
     /**
@@ -22,7 +44,7 @@ class NovelController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Content/CreateProject');
     }
 
     /**
@@ -30,7 +52,23 @@ class NovelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateRequest = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'tags' => 'required',
+        ]);
+        $cloudinaryImage = $request->file('image')->storeOnCloudinary('novel_project/cover_image');
+        $url = $cloudinaryImage->getSecurePath();
+        $public_id = $cloudinaryImage->getPublicId();
+        Novel::create([
+            'title' => $validateRequest['title'],
+            'description' => $validateRequest['description'],
+            'image_url' => $url,
+            'image_public_id' => $public_id,
+            'status' => 'ongoing',
+            'followers' => 0,
+            'number_of_chapters' => 0,
+        ]);
     }
 
     /**
@@ -38,7 +76,19 @@ class NovelController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $novel = Novel::with('tags', 'user')->find($id);
+        return Inertia::render('Content/ProjectDetail', [
+            'novel' => [
+                'id' => $novel->id,
+                'title' => $novel->title,
+                'description' => $novel->description,
+                'image_url' => $novel->image_url,
+                'tags' => $novel->tags->map(function ($tag) {
+                    return ['id' => $tag->id, 'name' => $tag->tag_name];
+                }),
+                'author_name' => $novel->user->name,
+            ]
+        ]);
     }
 
     /**
@@ -46,7 +96,7 @@ class NovelController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        Inertia::render('Content/EditProject');
     }
 
     /**
@@ -54,7 +104,16 @@ class NovelController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validateRequest = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'tags' => 'required',
+        ]);
+        $novel = Novel::find($id);
+        $novel->update([
+            'title' => $validateRequest['title'],
+            'description' => $validateRequest['description'],
+        ]);
     }
 
     /**
@@ -62,6 +121,8 @@ class NovelController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $novel = Novel::find($id);
+        $novel->delete();
+        return redirect()->route('home');
     }
 }

@@ -1,16 +1,17 @@
 import NavigatorBar from "@/Components/NavigatorBar";
 import Sidebar from "@/Components/Sidebar";
 import { Link, Head, usePage } from "@inertiajs/react";
+import "../../css/layouts/ParentsLayout.css";
 
 export default function ParentsLayout({ header,children }) {
     const { auth } = usePage().props;
     return (
         <div className="flex flex-row">
             <Head title="Monarch Project" />
-                <Sidebar />
-            <div className="flex-col flex vw-85 margin-left-15">
+            <Sidebar />
+            <div className="flex-col flex vw-85 margin-left-15 container">
                 <NavigatorBar auth={auth} />
-                <main>{children}</main>
+                <main className="main-content">{children}</main>
             </div>
         </div>
     );

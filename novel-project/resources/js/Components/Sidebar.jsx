@@ -4,6 +4,7 @@ import ApplicationLogo from "./ApplicationLogo";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CgDetailsMore } from "react-icons/cg";
 import { useEffect } from "react";
+import "../../css/components/Sidebar.css";
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(true);
@@ -24,11 +25,7 @@ export default function Sidebar() {
     };
 
     return (
-        <div
-            className={`fixed top-0 left-0 h-screen bg-gray-200 flex flex-col p-4 ${
-                isOpen ? "width-1-6-vw" : "w-16"
-            }`}
-        >
+        <div className={`sidebar-container`}>
             <div className="flex items-center justify-between w-full mb-4">
                 <Link href={route("home")}>
                     <ApplicationLogo className="h-10" />
@@ -38,79 +35,68 @@ export default function Sidebar() {
                     className="text-gray-700 hover:text-gray-900"
                 >
                     {isOpen ? (
-                        <CgDetailsMore size={20} />
-                    ) : (
                         <IoIosCloseCircleOutline size={20} />
+                    ) : (
+                        <CgDetailsMore size={20} />
                     )}
                 </button>
             </div>
-            {isOpen && (
-                <div>
-                    <button  className="mb-4 bg-blue-500 text-white py-2 px-4 rounded">
-                        <Link href={route("create-project")}>
-                            Create
-                        </Link>
-                    </button>
-                    <div className="w-full">
-                        <h2 className="text-lg genshin-font font-semibold mb-2">
-                            Categories
-                        </h2>
-                        <ul>
-                            <li
-                                className={`
+            <div>
+                <div className="w-full">
+                    <h2 className="text-lg font-semibold mb-2">
+                        Categories
+                    </h2>
+                    <ul>
+                        <li
+                            className={`
                                 ${getItemClass("home")} mb-2 `}
+                        >
+                            <Link href={route("home")}>
+                                Home
+                            </Link>
+                        </li>
+                        <li className={`${getItemClass("following")} mb-2`}>
+                            <Link
+                                href={route("following")}
                             >
-                                <Link
-                                    href={route("home")}
-                                    className="genshin-font"
-                                >
-                                    Home
-                                </Link>
-                            </li>
-                            <li className={`${getItemClass("following")} mb-2`}>
-                                <Link
-                                    href={route("following")}
-                                    className="genshin-font"
-                                >
-                                    Following
-                                </Link>
-                            </li>
-                            <li
-                                className={`${getItemClass(
-                                    "advanced-search"
-                                )} mb-2`}
+                                Following
+                            </Link>
+                        </li>
+                        <li
+                            className={`${getItemClass(
+                                "advanced-search"
+                            )} mb-2`}
+                        >
+                            <Link
+                                href={route("advanced-search")}
                             >
-                                <Link
-                                    href={route("advanced-search")}
-                                    className="genshin-font"
-                                >
-                                    Advanced Search
-                                </Link>
-                            </li>
-                            <li
-                                className={`${getItemClass(
-                                    "list-project"
-                                )} mb-2`}
+                                Advanced Search
+                            </Link>
+                        </li>
+                        <li className={`${getItemClass("create-project")} mb-2`}>
+                            <Link
+                                href={route("create-project")}
                             >
-                                <Link
-                                    href={route("list-project")}
-                                    className="genshin-font"
-                                >
-                                    Project
-                                </Link>
-                            </li>
-                            <li className={`${getItemClass("settings")} mb-2`}>
-                                <Link
-                                    href={route("settings")}
-                                    className="genshin-font"
-                                >
-                                    Settings
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                                Create New Project
+                            </Link>
+                        </li>                   
+                        <li className={`${getItemClass("list-project")} mb-2`}>
+                            <Link
+                                href={route("list-project")}
+                            >
+                                Your Project
+                            </Link>
+                        </li>
+                        <li className={`${getItemClass("settings")} mb-2`}>
+                            <Link
+                                href={route("settings")}
+                            >
+                                Settings
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

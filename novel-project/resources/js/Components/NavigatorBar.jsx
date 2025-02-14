@@ -7,6 +7,7 @@ import { React, useState, useEffect } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import Dropdown from "./Dropdown";
 import image from "../../../public/image/default_avatar.jpg";
+import "../../css/components/NavigatorBar.css";
 
 export default function NavigatorBar({ auth, userName }) {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -28,11 +29,9 @@ export default function NavigatorBar({ auth, userName }) {
     return (
         <nav
             className={`
+                navigator-bar
                 fixed 
                 top-0 
-                h-16
-                vw-85
-
                 transition-colors
                 duration-300 
                 ${isScrolled ? "bg-white" : "bg-transparent"}`}
