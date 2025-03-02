@@ -9,7 +9,7 @@ export default function ParentsLayout({ header,children }) {
         <div className="flex flex-row">
             <Head title="Monarch Project" />
             <Sidebar />
-            <div className="flex-col flex vw-85 margin-left-15 container">
+            <div className="flex-col flex container">
                 <NavigatorBar auth={auth} />
                 <main className="main-content">{children}</main>
             </div>

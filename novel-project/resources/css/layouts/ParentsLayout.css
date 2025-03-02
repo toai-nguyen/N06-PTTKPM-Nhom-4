@@ -1,7 +1,9 @@
 .main-content{
-    padding: 12vh 2vh 2vh 1vw;
+    margin-left: calc(15vw + 1rem);
+    margin-top: 10vh;
+    width: calc(100% - 15vw - 1rem);
+    padding-right: 1rem;
 }
-.container{
-    width: 85vw;
-    padding-left: 15vw;
-}
+/* .container{
+    
+} */

@@ -1,14 +1,14 @@
 import ParentsLayout from '@/Layouts/ParentsLayout';
-import Random from '@/Components/Home/Random';
-import LatestUpdate from '@/Components/Home/LastestUpdate';
+import RowNovels from '@/Components/NovelsLayouts/RowNovels';
 import TopNovels from '@/Components/Home/TopNovels';
+import GridNovels from '@/Components/NovelsLayouts/GridNovels';
 export default function Home({topNovels, lastestNovels, randomNovels}) {
     return (
         <ParentsLayout>
-            {/* passing data to child components */}
                 <TopNovels novels={topNovels} />
-                <LatestUpdate lastest = {lastestNovels} />
-                <Random random = {randomNovels} />
+                <GridNovels title = "Lastest Update" novels={lastestNovels} />
+                <RowNovels title = "Recommend" novels={randomNovels} />
+                {/* <Random random = {randomNovels} /> */}
         </ParentsLayout>
     );
 }

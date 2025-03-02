@@ -19,45 +19,46 @@ export default function TopNovels({ novels }) {
             }
         };
 
-        const container = document.querySelector('.carousel-container');
-        container.addEventListener('transitionend', handleTransitionEnd);
+        const container = document.querySelector(".carousel-container");
+        container.addEventListener("transitionend", handleTransitionEnd);
 
         return () => {
-            container.removeEventListener('transitionend', handleTransitionEnd);
+            container.removeEventListener("transitionend", handleTransitionEnd);
         };
     }, [currentIndex, novels.length]);
 
     const nextSlide = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
-        setCurrentIndex(prev => prev + 1);
+        setCurrentIndex((prev) => prev + 1);
     };
 
     const prevSlide = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
-        setCurrentIndex(prev => prev - 1);
+        setCurrentIndex((prev) => prev - 1);
     };
 
-    const allSlides = [
-        novels[novels.length - 1],
-        ...novels,
-        novels[0],
-    ];
+    const allSlides = [novels[novels.length - 1], ...novels, novels[0]];
 
     return (
-        <div className="bg-gray-100 popular-container">
+        <div className="popular-container">
             <h2 className="popular-title">Popular Title</h2>
             <div className="popular-content">
-                <div 
+                <div
                     className="carousel-container"
                     style={{
                         transform: `translateX(-${currentIndex * 100}%)`,
-                        transition: isTransitioning ? 'transform 0.3s ease-in-out' : 'none'
+                        transition: isTransitioning
+                            ? "transform 0.3s ease-in-out"
+                            : "none",
                     }}
                 >
                     {allSlides.map((novel, index) => (
-                        <div key={`${novel.id}-${index}`} className="flex popular-novel">
+                        <div
+                            key={`${novel.id}-${index}`}
+                            className="flex popular-novel"
+                        >
                             <div className="popular-novel-image">
                                 <img
                                     src={novel.image_url}
@@ -81,33 +82,39 @@ export default function TopNovels({ novels }) {
                                             {novel.tags.map((tag) => (
                                                 <span
                                                     key={tag.id}
-                                                    className="bg-gray-400 px-3 py-2 tag-item"
+                                                    className="bg-gray-400 tag-item"
                                                 >
                                                     {tag.name}
                                                 </span>
                                             ))}
+                                        </div>
+                                        <div className="carousel-controls">
+                                            <button
+                                                className="carousel-button prev"
+                                                onClick={prevSlide}
+                                                disabled={isTransitioning}
+                                            >
+                                                <MdNavigateBefore
+                                                    className="btn-prev"
+                                                    size={25}
+                                                />
+                                            </button>
+                                            <button
+                                                className="carousel-button next"
+                                                onClick={nextSlide}
+                                                disabled={isTransitioning}
+                                            >
+                                                <MdNavigateNext
+                                                    className="btn-next"
+                                                    size={25}
+                                                />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     ))}
-                </div>
-                <div className="carousel-controls">
-                    <button 
-                        className="carousel-button prev" 
-                        onClick={prevSlide}
-                        disabled={isTransitioning}
-                    >
-                        <MdNavigateBefore className="btn-prev" />
-                    </button>
-                    <button 
-                        className="carousel-button next" 
-                        onClick={nextSlide}
-                        disabled={isTransitioning}
-                    >
-                        <MdNavigateNext className="btn-next" />
-                    </button>
                 </div>
             </div>
         </div>

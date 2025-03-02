@@ -1,4 +1,10 @@
 .navigator-bar {
     height: 10vh;
     width: 85vw;
+    left: 15vw;
+    z-index: 1000;
+}
+.text-input {
+    padding-right: 4vw;
+    margin-right: 2vw;
 }

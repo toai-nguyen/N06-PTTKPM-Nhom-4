@@ -25,7 +25,7 @@ export default function Sidebar() {
     };
 
     return (
-        <div className={`sidebar-container`}>
+        <div className= " sidebar-container ">
             <div className="flex items-center justify-between w-full mb-4">
                 <Link href={route("home")}>
                     <ApplicationLogo className="h-10" />

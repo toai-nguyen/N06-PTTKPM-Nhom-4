@@ -1,11 +1,15 @@
 import HomeLayout from '@/Layouts/ParentsLayout';
-
-export default function ListProject() {
+import NotAuth from '@/Components/Home/NotAuth';
+export default function ListProject({ auth}) {
     return (
         <HomeLayout>
-            <div className="p-6 text-gray-900 dark:text-gray-100">
-                <h1>List Project</h1>
-            </div>
+            {!auth.user ? (
+                <NotAuth />
+            ) : (
+                <div>
+                    <h1>Your project show here</h1>
+                </div>
+            )}
         </HomeLayout>
     );
 }

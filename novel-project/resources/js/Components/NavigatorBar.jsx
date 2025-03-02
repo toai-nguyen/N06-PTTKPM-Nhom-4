@@ -43,6 +43,7 @@ export default function NavigatorBar({ auth, userName }) {
                 justify-end
                 h-full
                 px-4
+                lg:px-8
                 "
             >
                 {/* <div>
@@ -50,9 +51,10 @@ export default function NavigatorBar({ auth, userName }) {
                         <ApplicationLogo className="h-10 fill-current text-gray-800" />
                     </Link>
                 </div> */}
+                <TextInput className = "text-input" placeholder="Search" />
                 {auth.user ? (
                     <div className="flex items-center bg-white space-x-4">
-                        <TextInput placeholder="Search" />
+                        
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <UserAvatar

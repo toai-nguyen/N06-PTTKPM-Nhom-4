@@ -11,7 +11,7 @@ class NovelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request )
     {
         $topNovels = Novel::with('tags', 'user')
         ->orderBy('followers', 'desc')
@@ -31,8 +31,34 @@ class NovelController extends Controller
         });
 
 
-        $lastestNovels = Novel::orderBy('created_at', 'desc')->take(10)->get();
-        $randomNovels = Novel::inRandomOrder()->take(10)->get();
+        $lastestNovels = Novel::orderBy('created_at', 'desc')
+        ->take(12)
+        ->get()
+        ->map(function ($novel){
+            return [
+                'id' => $novel->id,
+                'title' => $novel->title,
+                'image_url' => $novel->image_url,
+                'author_name' => $novel->user->name,
+            ];
+        });
+        $randomNovels = Novel::inRandomOrder()->take(10)->get()
+        ->map(function ($novel){
+            return [
+                'id' => $novel->id,
+                'title' => $novel->title,
+                'image_url' => $novel->image_url,
+                // 'author_name' => $novel->user->name,
+            ];
+        });
+
+        // if($request -> wantsJson()){
+        //     return response()->json([
+        //         'topNovels' => $topNovels,
+        //         'lastestNovels' => $lastestNovels,
+        //         'randomNovels' => $randomNovels
+        //     ]);
+        // }
         return Inertia::render('Home', [
             'topNovels' => $topNovels, 
             'lastestNovels' => $lastestNovels,
