@@ -1,129 +1,148 @@
-import React, { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Menu } from "lucide-react";
 
-const MangaCarousel = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+const Layout = ({ children, auth }) => {
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
-    // Mock data for manga titles
-    const items = [
-        {
-            id: 1,
-            title: "Bouken ni Iku Fuku ga Nai!",
-            cover: "/api/placeholder/280/400",
-            author: "Negi Tojou",
-            tags: ["ACTION", "ADVENTURE", "COMEDY", "FANTASY"],
-            description:
-                "A certain village was attacked by a monster army and fell into a dire situation. At that moment, the strongest hero, Eric, appeared and instantly mowed down the enemies...",
-        },
-        {
-            id: 2,
-            title: "Sample Manga 2",
-            cover: "/api/placeholder/280/400",
-            author: "Author 2",
-            tags: ["ACTION", "DRAMA"],
-            description: "Another exciting story...",
-        },
-        {
-            id: 3,
-            title: "Sample Manga 3",
-            cover: "/api/placeholder/280/400",
-            author: "Author 3",
-            tags: ["ROMANCE", "COMEDY"],
-            description: "A romantic comedy...",
-        },
-    ];
-
-    const nextSlide = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === items.length - 1 ? 0 : prevIndex + 1
-        );
-    };
-
-    const prevSlide = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? items.length - 1 : prevIndex - 1
-        );
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
     };
 
     return (
-        <div className="relative w-full max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Popular New Titles</h2>
-
-            <div className="relative overflow-hidden">
-                <div
-                    className="flex transition-transform duration-500 ease-in-out"
-                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                >
-                    {items.map((item) => (
-                        <div
-                            key={item.id}
-                            className="w-full flex-shrink-0 flex gap-6 p-4"
-                        >
-                            <div className="w-72">
-                                <img
-                                    src={item.cover}
-                                    alt={item.title}
-                                    className="w-full h-96 object-cover rounded-lg shadow-lg"
-                                />
-                            </div>
-
-                            <div className="flex-1">
-                                <h3 className="text-2xl font-bold mb-2">
-                                    {item.title}
-                                </h3>
-                                <p className="text-gray-600 mb-2">
-                                    {item.author}
-                                </p>
-
-                                <div className="flex gap-2 mb-4">
-                                    {item.tags.map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                <p className="text-gray-700 leading-relaxed">
-                                    {item.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        <div className="flex h-screen w-full">
+            {/* Sidebar */}
+            <div
+                className={`transition-all duration-300 ease-in-out bg-white shadow-md 
+        ${sidebarOpen ? "w-64" : "w-0 -ml-6"}`}
+            >
+                {sidebarOpen && <Sidebar />}
             </div>
 
-            <button
-                onClick={prevSlide}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
-            >
-                <ChevronLeft size={24} />
-            </button>
+            {/* Main content area */}
+            <div className="flex flex-col flex-1 overflow-hidden">
+                <div className="flex items-center shadow-sm h-16 px-4">
+                    {!sidebarOpen && (
+                        <button
+                            className="mr-4 focus:outline-none"
+                            onClick={toggleSidebar}
+                        >
+                            <Menu size={24} />
+                        </button>
+                    )}
 
-            <button
-                onClick={nextSlide}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
-            >
-                <ChevronRight size={24} />
-            </button>
+                    <div className="flex justify-between items-center w-full">
+                        {/* Logo can be conditionally shown based on sidebar state */}
+                        {!sidebarOpen && (
+                            <div className="logo mr-4">MangaDex</div>
+                        )}
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                {items.map((_, index) => (
-                    <button
-                        key={index}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                            index === currentIndex
-                                ? "bg-blue-600"
-                                : "bg-gray-300"
-                        }`}
-                        onClick={() => setCurrentIndex(index)}
-                    />
-                ))}
+                        {/* Rest of navbar content */}
+                        <NavigatorBar
+                            auth={auth}
+                            onMenuClick={
+                                sidebarOpen ? toggleSidebar : undefined
+                            }
+                        />
+                    </div>
+                </div>
+
+                <main className="flex-1 overflow-auto p-4">{children}</main>
             </div>
         </div>
     );
 };
 
-export default MangaCarousel;
+// Sidebar component with close button
+const Sidebar = ({ onClose }) => {
+    return (
+        <div className="h-full p-4">
+            <div className="flex items-center justify-between mb-6">
+                <div className="logo">MangaDex</div>
+                {onClose && (
+                    <button className="focus:outline-none" onClick={onClose}>
+                        <XIcon size={18} />
+                    </button>
+                )}
+            </div>
+
+            {/* Sidebar content similar to MangaDex */}
+            <nav className="space-y-6">
+                <div>
+                    <a
+                        href="#"
+                        className="flex items-center p-2 bg-red-200 text-red-900 rounded"
+                    >
+                        <HomeIcon size={18} className="mr-3" />
+                        <span>Home</span>
+                    </a>
+                </div>
+
+                <div>
+                    <a
+                        href="#"
+                        className="flex items-center p-2 hover:bg-gray-100 rounded"
+                    >
+                        <BookmarkIcon size={18} className="mr-3" />
+                        <span>Follows</span>
+                    </a>
+                    <div className="pl-8 mt-2 space-y-2">
+                        <a href="#" className="block text-gray-600">
+                            Updates
+                        </a>
+                        <a href="#" className="block text-gray-600">
+                            Library
+                        </a>
+                        <a href="#" className="block text-gray-600">
+                            MDLists
+                        </a>
+                        <a href="#" className="block text-gray-600">
+                            My Groups
+                        </a>
+                        <a href="#" className="block text-gray-600">
+                            Reading History
+                        </a>
+                    </div>
+                </div>
+
+                {/* Additional sidebar sections similar to MangaDex */}
+            </nav>
+        </div>
+    );
+};
+
+{
+    /* <div className="popular-novel">
+                                <div className="popular-novel-image">
+                                    <img
+                                        src={novel.image_url}
+                                        alt={novel.title}
+                                        className=""
+                                    />
+                                </div>
+                                <div className="popular-novel-info">
+                                    <div>
+                                        <h3 className="">{novel.title}</h3>
+                                        <p className="description">
+                                            {novel.description}
+                                        </p>
+                                    </div>
+                                    <div className="sub-info-container d-flex flex-columnb">
+                                        <p className="author-name">
+                                            {novel.author_name}
+                                        </p>
+                                        <div className="sub-info-container flex">
+                                            <div className="tag-list">
+                                                {novel.tags.map((tag) => (
+                                                    <span
+                                                        key={tag.id}
+                                                        className="bg-gray-400 tag-item"
+                                                    >
+                                                        {tag.name}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> */
+}

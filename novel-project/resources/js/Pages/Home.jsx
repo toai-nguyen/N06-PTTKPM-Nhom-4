@@ -8,7 +8,6 @@ export default function Home({topNovels, lastestNovels, randomNovels}) {
                 <TopNovels novels={topNovels} />
                 <GridNovels title = "Lastest Update" novels={lastestNovels} />
                 <RowNovels title = "Recommend" novels={randomNovels} />
-                {/* <Random random = {randomNovels} /> */}
         </ParentsLayout>
     );
 }

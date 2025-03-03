@@ -3,7 +3,14 @@
     margin-top: 10vh;
     width: calc(100% - 15vw - 1rem);
     padding-right: 1rem;
+    transition: all 0.3s ease;
 }
-/* .container{
-    
-} */
+
+.main-content.sidebar-closed {
+    margin-left: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.container {
+    transition: all 0.3s ease;
+}
