@@ -14,6 +14,6 @@ class NovelSeeder extends Seeder
      */
     public function run(): void
     {
-        Novel::factory()->count(20)->create();
+        Novel::factory(140)->create();
     }
 }

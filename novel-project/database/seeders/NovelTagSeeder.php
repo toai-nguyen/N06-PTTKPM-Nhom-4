@@ -20,7 +20,7 @@ class NovelTagSeeder extends Seeder
         $tagIds = Tag::pluck('id')->toArray();
 
         foreach ($novelIds as $novelId) {
-            // Gán ngẫu nhiên từ 1 đến 3 tags cho mỗi novel
+            // Gán ngẫu nhiên từ 1 đến 10 tags cho mỗi novel
             $randomTagIds = array_rand(array_flip($tagIds), rand(1, 10));
             if (!is_array($randomTagIds)) {
                 $randomTagIds = [$randomTagIds];

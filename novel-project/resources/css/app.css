@@ -19,7 +19,9 @@
     font-family: 'Montserrat', sans-serif;
     color: #373737;
 }
-
+.font-white {
+    color: #ebebeb;
+}
 .bg-accent {
     background-color: rgba(240,241,242,1);
 }

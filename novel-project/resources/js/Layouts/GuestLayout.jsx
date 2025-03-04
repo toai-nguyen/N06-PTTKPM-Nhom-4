@@ -30,7 +30,9 @@ export default function GuestLayout({ children }) {
                     {isLoginPage ? "Create an account" : "Log in"}
                 </SecondaryButton>
             </Link>
-
+            <Link href="/" className="right-4 bottom-4 absolute ">
+                <SecondaryButton>Use guess mode</SecondaryButton>
+            </Link>
             <div
                 className="
             mt-6 w-full
@@ -44,7 +46,7 @@ export default function GuestLayout({ children }) {
             dark:bg-gray-800"
             >
                 <div className="flex justify-center">
-                    <Link href="/">
+                    <Link href="/login">
                         <ApplicationLogo className="h-20 fill-current text-gray-500" />
                     </Link>
                 </div>

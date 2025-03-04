@@ -42,7 +42,7 @@ class NovelController extends Controller
                 'author_name' => $novel->user->name,
             ];
         });
-        $randomNovels = Novel::inRandomOrder()->take(10)->get()
+        $randomNovels = Novel::inRandomOrder()->take(15)->get()
         ->map(function ($novel){
             return [
                 'id' => $novel->id,
@@ -51,14 +51,6 @@ class NovelController extends Controller
                 // 'author_name' => $novel->user->name,
             ];
         });
-
-        // if($request -> wantsJson()){
-        //     return response()->json([
-        //         'topNovels' => $topNovels,
-        //         'lastestNovels' => $lastestNovels,
-        //         'randomNovels' => $randomNovels
-        //     ]);
-        // }
         return Inertia::render('Home', [
             'topNovels' => $topNovels, 
             'lastestNovels' => $lastestNovels,
