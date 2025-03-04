@@ -14,6 +14,9 @@ use App\Http\Controllers\NovelController;
 
 Route::get('/', [NovelController::class, 'index'])->name('home');
 
+// View a novel
+Route::get('/novels/{novel_id}', [NovelController::class, 'show'])->name('view-novel');
+
 //add new novel 
 Route::post('/novels/add', [NovelController::class, 'store'])->name('add-novel');
 //update novel

@@ -28,6 +28,13 @@
 .header{
     margin-top: 20px;
 }
+.chapter-card:hover{
+    transition: transform 0.2s;
+    background-color: rgb(199, 199, 199);;
+}
+.nothing-to-show{
+    height: 60vh;
+}
 /* .main-content {
     margin-bottom: 5vh;
     width: 100%;

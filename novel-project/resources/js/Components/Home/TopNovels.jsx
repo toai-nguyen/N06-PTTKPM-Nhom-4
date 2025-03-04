@@ -45,7 +45,7 @@ export default function TopNovels({ novels }) {
                 >
                     {novels.map((novel) => (
                         <SwiperSlide key={novel.id}>
-                            <Link href = "" ><PopularNovelsCard novel={novel} /></Link>
+                            <Link href = {route("view-novel", novel.id)} ><PopularNovelsCard novel={novel} /></Link>
                         </SwiperSlide>
                     ))}
                 </Swiper>

@@ -39,7 +39,7 @@ export default function Following({ auth, followNovels }) {
                                 href="/"
                                 className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
                             >
-                                <PrimaryButton>Discover Novels</PrimaryButton>
+                                Discover Novels
                             </Link>
                         </div>
                     )}

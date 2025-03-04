@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Novel;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class NovelController extends Controller
 {
@@ -13,6 +14,7 @@ class NovelController extends Controller
      */
     public function index(Request $request )
     {
+        //home page: show top 5 novels with most followers, 12 latest novels, 15 random novels
         $topNovels = Novel::with('tags', 'user')
         ->orderBy('followers', 'desc')
         ->take(5)
@@ -94,18 +96,38 @@ class NovelController extends Controller
      */
     public function show(string $id)
     {
-        $novel = Novel::with('tags', 'user')->find($id);
+        //show selected novel with all chapters
+        $rawNovel = Novel::with(['tags' , 'user', 'chapters' => function($query){
+            $query->orderBy('chapter_number', 'asc');
+        }])->find($id);
+            
+        $novel = [
+            'id' => $rawNovel->id,
+            'author_id' => $rawNovel->author_id,
+            'status' => $rawNovel->status,
+            'followers' => $rawNovel->followers,
+            'number_of_chapters' => $rawNovel->number_of_chapters,
+            'title' => $rawNovel->title,
+            'description' => $rawNovel->description,
+            'image_url' => $rawNovel->image_url,
+            'tags' => $rawNovel->tags->map(function ($tag) {
+                return ['id' => $tag->id, 'name' => $tag->tag_name];
+            }),
+            'author_name' => $rawNovel->user->name,
+            'chapters' => $rawNovel->chapters->map(function ($chapter) {
+                return [
+                    'id' => $chapter->id,
+                    'title' => $chapter->title,
+                    'chapter_number' => $chapter->chapter_number,
+                    'updated_at' => $chapter->updated_at->format('d M Y'),
+                ];
+            }),
+        ];
+
+        $isAuthor = Auth::user()->id === $novel['author_id'];
         return Inertia::render('Content/ProjectDetail', [
-            'novel' => [
-                'id' => $novel->id,
-                'title' => $novel->title,
-                'description' => $novel->description,
-                'image_url' => $novel->image_url,
-                'tags' => $novel->tags->map(function ($tag) {
-                    return ['id' => $tag->id, 'name' => $tag->tag_name];
-                }),
-                'author_name' => $novel->user->name,
-            ]
+            'novel' => $novel,
+            'isAuthor' => $isAuthor,
         ]);
     }
 

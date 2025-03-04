@@ -1,0 +1,19 @@
+import PopularNovelsCard from "@/Components/PopularNovelsCard";
+import ParentsLayout from "@/Layouts/ParentsLayout";
+import ListChapter from "@/Components/Novel/ListChapter";
+import AuthorInfo from "@/Components/Novel/AuthorInfo";
+import Comment from "@/Components/Novel/Comment";
+export default function ProjectDetail({auth, novel, isAuthor}) {
+    return (
+        <ParentsLayout>
+            <div className="novel-container">
+                <PopularNovelsCard novel={novel} />
+                <div className="novel-infomation flex flex-row">
+                    <ListChapter chapters={novel.chapters} isAuthor={isAuthor}/>
+                    <AuthorInfo isAuthor = {isAuthor} />
+                </div>
+                <Comment />
+            </div>
+        </ParentsLayout>
+    );
+}
