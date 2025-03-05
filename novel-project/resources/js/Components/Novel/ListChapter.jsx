@@ -5,17 +5,15 @@ import Header from "../Header";
 
 export default function ListChapter({chapters, isAuthor}) {
     const len = chapters.length;
-    // formatDate = (date) => {
-    //     return new Date(date).toLocaleDateString();
-    // };
+
     return (
         <div className="w-3/4 p-4">
             {len > 0 ? (
                 <div>
                     <Header title="List of chapter"/>
                     {chapters.map((chapter) => (
-                        <Link href="">
-                            <ChapterCard chapter={chapter} />
+                        <Link href="" key={chapter.id}>
+                            <ChapterCard chapter={chapter} isAuthor={isAuthor} />
                         </Link>
                     ))}
                 </div>

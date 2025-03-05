@@ -123,8 +123,12 @@ class NovelController extends Controller
                 ];
             }),
         ];
-
-        $isAuthor = Auth::user()->id === $novel['author_id'];
+        if (Auth::user()) {
+            $isAuthor = Auth::user()->id === $novel['author_id'];
+        }
+        else {
+            $isAuthor = false;
+        }
         return Inertia::render('Content/ProjectDetail', [
             'novel' => $novel,
             'isAuthor' => $isAuthor,

@@ -1,148 +1,85 @@
-import { useState } from "react";
-import { Menu } from "lucide-react";
+                <div className="max-w-4xl mx-auto p-6">
+                    <h1 className="genshin-font text-2xl font-bold mb-6">Create New Novel</h1>
+                    
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Title Input */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Title
+                            </label>
+                            <TextInput
+                                name="title"
+                                value={formData.title}
+                                onChange={handleInputChange}
+                                className="w-full"
+                                required
+                            />
+                        </div>
 
-const Layout = ({ children, auth }) => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+                        {/* Description Input */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Description
+                            </label>
+                            <textarea
+                                name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                rows="4"
+                                className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                required
+                            />
+                        </div>
 
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
-
-    return (
-        <div className="flex h-screen w-full">
-            {/* Sidebar */}
-            <div
-                className={`transition-all duration-300 ease-in-out bg-white shadow-md 
-        ${sidebarOpen ? "w-64" : "w-0 -ml-6"}`}
-            >
-                {sidebarOpen && <Sidebar />}
-            </div>
-
-            {/* Main content area */}
-            <div className="flex flex-col flex-1 overflow-hidden">
-                <div className="flex items-center shadow-sm h-16 px-4">
-                    {!sidebarOpen && (
-                        <button
-                            className="mr-4 focus:outline-none"
-                            onClick={toggleSidebar}
-                        >
-                            <Menu size={24} />
-                        </button>
-                    )}
-
-                    <div className="flex justify-between items-center w-full">
-                        {/* Logo can be conditionally shown based on sidebar state */}
-                        {!sidebarOpen && (
-                            <div className="logo mr-4">MangaDex</div>
-                        )}
-
-                        {/* Rest of navbar content */}
-                        <NavigatorBar
-                            auth={auth}
-                            onMenuClick={
-                                sidebarOpen ? toggleSidebar : undefined
-                            }
-                        />
-                    </div>
-                </div>
-
-                <main className="flex-1 overflow-auto p-4">{children}</main>
-            </div>
-        </div>
-    );
-};
-
-// Sidebar component with close button
-const Sidebar = ({ onClose }) => {
-    return (
-        <div className="h-full p-4">
-            <div className="flex items-center justify-between mb-6">
-                <div className="logo">MangaDex</div>
-                {onClose && (
-                    <button className="focus:outline-none" onClick={onClose}>
-                        <XIcon size={18} />
-                    </button>
-                )}
-            </div>
-
-            {/* Sidebar content similar to MangaDex */}
-            <nav className="space-y-6">
-                <div>
-                    <a
-                        href="#"
-                        className="flex items-center p-2 bg-red-200 text-red-900 rounded"
-                    >
-                        <HomeIcon size={18} className="mr-3" />
-                        <span>Home</span>
-                    </a>
-                </div>
-
-                <div>
-                    <a
-                        href="#"
-                        className="flex items-center p-2 hover:bg-gray-100 rounded"
-                    >
-                        <BookmarkIcon size={18} className="mr-3" />
-                        <span>Follows</span>
-                    </a>
-                    <div className="pl-8 mt-2 space-y-2">
-                        <a href="#" className="block text-gray-600">
-                            Updates
-                        </a>
-                        <a href="#" className="block text-gray-600">
-                            Library
-                        </a>
-                        <a href="#" className="block text-gray-600">
-                            MDLists
-                        </a>
-                        <a href="#" className="block text-gray-600">
-                            My Groups
-                        </a>
-                        <a href="#" className="block text-gray-600">
-                            Reading History
-                        </a>
-                    </div>
-                </div>
-
-                {/* Additional sidebar sections similar to MangaDex */}
-            </nav>
-        </div>
-    );
-};
-
-{
-    /* <div className="popular-novel">
-                                <div className="popular-novel-image">
+                        {/* Cover Image Upload */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Cover Image
+                            </label>
+                            <div className="flex items-center space-x-4">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    className="hidden"
+                                    id="coverImage"
+                                    required
+                                />
+                                <label
+                                    htmlFor="coverImage"
+                                    className="px-4 py-2 bg-gray-100 rounded-md cursor-pointer hover:bg-gray-200"
+                                >
+                                    Choose File
+                                </label>
+                                {previewImage && (
                                     <img
-                                        src={novel.image_url}
-                                        alt={novel.title}
-                                        className=""
+                                        src={previewImage}
+                                        alt="Preview"
+                                        className="h-20 w-20 object-cover rounded"
                                     />
-                                </div>
-                                <div className="popular-novel-info">
-                                    <div>
-                                        <h3 className="">{novel.title}</h3>
-                                        <p className="description">
-                                            {novel.description}
-                                        </p>
-                                    </div>
-                                    <div className="sub-info-container d-flex flex-columnb">
-                                        <p className="author-name">
-                                            {novel.author_name}
-                                        </p>
-                                        <div className="sub-info-container flex">
-                                            <div className="tag-list">
-                                                {novel.tags.map((tag) => (
-                                                    <span
-                                                        key={tag.id}
-                                                        className="bg-gray-400 tag-item"
-                                                    >
-                                                        {tag.name}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */
-}
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Content File Upload */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Content File
+                            </label>
+                            <input
+                                type="file"
+                                accept=".txt,.doc,.docx,.pdf"
+                                onChange={handleContentUpload}
+                                className="w-full"
+                                required
+                            />
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="flex justify-end">
+                            <SecondaryButton type="submit">
+                                Create Novel
+                            </SecondaryButton>
+                        </div>
+                    </form>
+                </div>

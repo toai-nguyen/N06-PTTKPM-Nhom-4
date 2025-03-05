@@ -6,7 +6,7 @@ import SecondaryButton from "./SecondaryButton";
 
 export default function NothingToShow({ isAuthor }) {
     return (
-        <div className="bg-accent nothing-to-show h-full flex items-center justify-center">
+        <div className="bg-accent nothing-to-show h-full flex items-center justify-center p-4">
             {isAuthor ? (
                 <div className="flex flex-col items-center justify-center w-full">
                     <img
