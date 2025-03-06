@@ -1,5 +1,4 @@
 import { MdModeEditOutline } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
 import "../../css/components/ChapterCard.css";
 export default function ChapterCard({chapter, isAuthor}) {
     return (
@@ -14,7 +13,6 @@ export default function ChapterCard({chapter, isAuthor}) {
                 {isAuthor && (
                     <div className="flex">
                         <button><MdModeEditOutline className="ml-2 author-button"/></button>
-                        <button><FaTrash className="ml-2 author-button"/></button>
                     </div>
                 )}
             </div>

@@ -30,7 +30,7 @@ export default function AuthorInfo({ novel, isAuthor }) {
             </div>
             {isAuthor ? (
                 <div className="author-actions mt-4 flex" style={{ justifyContent: "space-between" }}>
-                    <Link href="">
+                    <Link href={route("chapter.create", novel.id)}>
                         <PrimaryButton className="">
                             Add new chapter
                         </PrimaryButton>

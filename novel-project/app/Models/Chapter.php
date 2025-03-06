@@ -11,6 +11,7 @@ class Chapter extends Model
     protected $fillable = [
         'novel_id',
         'user_id',
+        'author_id',
         'title',
         'content',
         'chapter_number',

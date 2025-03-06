@@ -10,7 +10,7 @@ import { CgDetailsMore } from "react-icons/cg";
 import image from "../../../public/image/default_avatar.jpg";
 import "../../css/components/NavigatorBar.css";
 
-export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar }) {
+export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar, removeFixed = false }) {
     const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar }) 
         <nav
             className={`
                 navigator-bar
-                fixed 
+                ${removeFixed ? "fixed" : ""} 
                 top-0 
                 transition-colors
                 duration-300
@@ -58,7 +58,7 @@ export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar }) 
                         >
                             <CgDetailsMore size={20} />
                         </button>
-                        <Link href=""><ApplicationLogo className="h-10" /></Link>
+                        <Link href={route("home")}><ApplicationLogo className="h-10" /></Link>
                     </div>
                 )}
 

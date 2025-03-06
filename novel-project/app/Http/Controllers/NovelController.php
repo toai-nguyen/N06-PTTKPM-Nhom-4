@@ -155,6 +155,7 @@ class NovelController extends Controller
                 return [
                     'id' => $chapter->id,
                     'title' => $chapter->title,
+                    'novel_id' => $chapter->novel_id,
                     'chapter_number' => $chapter->chapter_number,
                     'updated_at' => $chapter->updated_at->format('d M Y'),
                 ];

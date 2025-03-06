@@ -12,7 +12,9 @@ export default function ListChapter({chapters, isAuthor}) {
                 <div>
                     <Header title="List of chapter"/>
                     {chapters.map((chapter) => (
-                        <Link href="" key={chapter.id}>
+                        <Link 
+                        href={route("chapter.show", {novel_id: chapter.novel_id, chapter_id:chapter.id})} 
+                        key={chapter.id}>
                             <ChapterCard chapter={chapter} isAuthor={isAuthor} />
                         </Link>
                     ))}

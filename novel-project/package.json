@@ -21,8 +21,11 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@tailwindcss/typography": "^0.5.16",
+        "dompurify": "^3.2.4",
         "react-dropzone": "^14.3.8",
         "react-icons": "^5.4.0",
+        "react-quill": "^2.0.0",
         "swiper": "^11.2.4"
     }
 }
