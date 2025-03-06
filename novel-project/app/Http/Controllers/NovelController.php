@@ -281,7 +281,26 @@ class NovelController extends Controller
     public function destroy(string $id)
     {
         $novel = Novel::find($id);
+        if (Auth::user()->id !== $novel->author_id) {
+            return redirect()->route('home')->with('error', 'You do not have permission to delete this novel.');
+        }
+        // xóa ảnh trên cloudinary
+        if ($novel->image_public_id) {
+            try {
+                Cloudinary::destroy($novel->image_public_id);
+            } catch (\Exception $e) {
+                Log::warning('Failed to delete image: ' . $e->getMessage());
+            }
+        }
+        //xóa tags
+        $novel->tags()->detach();
+        //xóa người theo dõi ở bảng user_follows
+        $novel->followers()->detach();
+        //xóa các chapter
+        $novel->chapters()->delete();
+        //xóa novel
         $novel->delete();
-        return redirect()->route('home');
+
+        return redirect()->route('home')->with('success', 'Novel deleted successfully.');
     }
 }

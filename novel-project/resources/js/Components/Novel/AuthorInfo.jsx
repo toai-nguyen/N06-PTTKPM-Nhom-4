@@ -2,6 +2,7 @@ import { Link } from "@inertiajs/react";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "../PrimaryButton";
 import DangerButton from "../DangerButton";
+import DeleteNovelsForm from "./DeleteNovelsForm";
 
 export default function AuthorInfo({ novel, isAuthor }) {
     return (
@@ -39,11 +40,7 @@ export default function AuthorInfo({ novel, isAuthor }) {
                             Edit
                         </SecondaryButton>
                     </Link>
-                    <Link href="">
-                        <DangerButton className="">
-                            Delete
-                        </DangerButton>
-                    </Link>
+                    <DeleteNovelsForm novel={novel} />
                 </div>
             ):(
                 <div className="author-actions mt-4">
