@@ -1,21 +1,20 @@
 import ParentsLayout from "@/Layouts/ParentsLayout";
+import Header from "@/Components/Header";
 import NotAuth from "@/Components/Home/NotAuth";
 import NovelForm from "@/Components/Novel/NovelForm";
-import { useState } from "react";
-import Header from "@/Components/Header";
 
-export default function CreateProject({ auth, tags }) {
-
+export default function EditProject({auth, novel, tags}) {
+    const headerTitle = `Edit ${novel.title}`;
     return (
         <ParentsLayout>
             {!auth.user ? (
                 <NotAuth />
             ) : (
                 <div>
-                    <Header title="Create Project" />
-                    <NovelForm tags={tags} />
+                    <Header title={headerTitle} />
+                    <NovelForm novel={novel} tags={tags} isEditing = {true} />
                 </div>
             )}
         </ParentsLayout>
-    );
+    )
 }

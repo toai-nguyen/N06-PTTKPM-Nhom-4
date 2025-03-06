@@ -1,6 +1,7 @@
 import { Link } from "@inertiajs/react";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "../PrimaryButton";
+import DangerButton from "../DangerButton";
 
 export default function AuthorInfo({ novel, isAuthor }) {
     return (
@@ -26,18 +27,30 @@ export default function AuthorInfo({ novel, isAuthor }) {
                     <span>{novel.number_of_chapters}</span>
                 </div>
             </div>
-            
-            {isAuthor && (
-                <div className="author-actions mt-4 flex gap-2">
+            {isAuthor ? (
+                <div className="author-actions mt-4 flex" style={{ justifyContent: "space-between" }}>
                     <Link href="">
                         <PrimaryButton className="">
                             Add new chapter
                         </PrimaryButton>
                     </Link>
-                    <Link href="">
+                    <Link href={route("edit-novel", novel.id)}>
                         <SecondaryButton className="">
                             Edit
                         </SecondaryButton>
+                    </Link>
+                    <Link href="">
+                        <DangerButton className="">
+                            Delete
+                        </DangerButton>
+                    </Link>
+                </div>
+            ):(
+                <div className="author-actions mt-4">
+                    <Link href="">
+                        <PrimaryButton className="">
+                            Follow
+                        </PrimaryButton>
                     </Link>
                 </div>
             )}

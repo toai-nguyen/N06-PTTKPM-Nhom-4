@@ -21,6 +21,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "react-dropzone": "^14.3.8",
         "react-icons": "^5.4.0",
         "swiper": "^11.2.4"
     }

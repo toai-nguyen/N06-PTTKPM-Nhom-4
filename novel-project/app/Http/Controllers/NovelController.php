@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Novel;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\Tag; 
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 class NovelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request )
+    public function index()
     {
         //home page: show top 5 novels with most followers, 12 latest novels, 15 random novels
         $topNovels = Novel::with('tags', 'user')
@@ -64,7 +68,14 @@ class NovelController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Content/CreateProject');
+        $tags = Tag::all()
+        ->map(function ($tag) {
+            return [
+                'id' => $tag->id, 
+                'name' => $tag->tag_name
+            ];
+        });
+        return Inertia::render('Content/CreateProject' , ['tags' => $tags]);
     }
 
     /**
@@ -72,23 +83,49 @@ class NovelController extends Controller
      */
     public function store(Request $request)
     {
+    
         $validateRequest = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
-            'tags' => 'required',
+            'tags' => 'required|array|min:1',
+            'image' => 'required|image|max:5012', // 5MB
         ]);
-        $cloudinaryImage = $request->file('image')->storeOnCloudinary('novel_project/cover_image');
-        $url = $cloudinaryImage->getSecurePath();
-        $public_id = $cloudinaryImage->getPublicId();
-        Novel::create([
-            'title' => $validateRequest['title'],
-            'description' => $validateRequest['description'],
-            'image_url' => $url,
-            'image_public_id' => $public_id,
-            'status' => 'ongoing',
-            'followers' => 0,
-            'number_of_chapters' => 0,
-        ]);
+        
+        try {
+            $image = $request->file('image');
+            $cloudinaryImage = cloudinary()->upload($image->getRealPath(), [
+                'folder' => 'novel_project/cover_image',
+                'transformation' => [
+                    'width' => 440,
+                    'height' => 620,
+                    'crop' => 'fill',
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto',
+                ],
+            ]);
+            
+    
+            $url = $cloudinaryImage->getSecurePath();
+            $public_id = $cloudinaryImage->getPublicId();
+    
+            $novel = Novel::create([
+                'title' => $validateRequest['title'],
+                'description' => $validateRequest['description'],
+                'author_id' => Auth::user()->id,
+                'image_url' => $url,
+                'image_public_id' => $public_id,
+                'status' => 'ongoing',
+                'followers' => 0,
+                'number_of_chapters' => 0,
+            ]);
+            //lưu tag vào bảng tag_novel
+            $novel->tags()->attach($validateRequest['tags']);
+            
+            return redirect()->route('view-novel', $novel -> id )->with('success', 'Novel created successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error processing request:', ['message' => $e->getMessage()]);
+            return redirect()->back()->withErrors(['image' => 'Failed to upload image to Cloudinary. Please try again.']);
+        }
     }
 
     /**
@@ -139,8 +176,29 @@ class NovelController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        Inertia::render('Content/EditProject');
+    {   
+        $novelData = Novel::with('tags')->find($id);
+        if (Auth::user()->id !== $novelData->author_id) {
+            return redirect()->route('home')->with('error', 'You do not have permission to edit this novel.');
+        }
+        $novel = [
+            'id' => $novelData->id,
+            'title' => $novelData->title,
+            'description' => $novelData->description,
+            'image_url' => $novelData->image_url,
+            'status' => $novelData->status,
+            'tags' => $novelData->tags->map(function ($tag) {
+                return ['id' => $tag->id, 'name' => $tag->tag_name];
+            }),
+        ];
+        $tags = Tag::all()
+        ->map(function ($tag) {
+            return [
+                'id' => $tag->id, 
+                'name' => $tag->tag_name
+            ];
+        });
+        return Inertia::render('Content/EditProject' , ['novel' => $novel, 'tags' => $tags]);
     }
 
     /**
@@ -149,15 +207,72 @@ class NovelController extends Controller
     public function update(Request $request, string $id)
     {
         $validateRequest = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'tags' => 'required',
+            'title' => 'required|string|min:1|max:255',
+            'description' => 'required|string|min:1',   
+            'status' => 'required|in:ongoing,completed',
+            'tags' => 'required|array|min:1',           
+            'image' => 'nullable|image|max:5012',       // Không bắt buộc, nhưng nếu có phải là ảnh
         ]);
+        
         $novel = Novel::find($id);
-        $novel->update([
+        
+        // Kiểm tra quyền sở hữu
+        if (Auth::user()->id !== $novel->author_id) {
+            return redirect()->route('home')->with('error', 'You do not have permission to edit this novel.');
+        }
+        
+        $updateData = [
             'title' => $validateRequest['title'],
             'description' => $validateRequest['description'],
-        ]);
+            'status' => $validateRequest['status'],
+        ];
+        
+        // Chỉ xử lý ảnh nếu người dùng đã tải lên ảnh mới
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ trên Cloudinary nếu có
+            if ($novel->image_public_id) {
+                try {
+                    Cloudinary::destroy($novel->image_public_id);
+                } catch (\Exception $e) {
+                    Log::warning('Failed to delete old image: ' . $e->getMessage());
+                    // Tiếp tục xử lý, không cần dừng lại vì lỗi xóa ảnh cũ
+                }
+            }
+            
+            // Upload ảnh mới
+            try {
+                $image = $request->file('image');
+                $cloudinaryImage = cloudinary()->upload($image->getRealPath(), [
+                    'folder' => 'novel_project/cover_image',
+                    'transformation' => [
+                        'width' => 440,
+                        'height' => 620,
+                        'crop' => 'fill',
+                        'quality' => 'auto',
+                        'fetch_format' => 'auto',
+                    ],
+                ]);
+                
+                $updateData['image_url'] = $cloudinaryImage->getSecurePath();
+                $updateData['image_public_id'] = $cloudinaryImage->getPublicId();
+            } catch (\Exception $e) {
+                Log::error('Failed to upload new image: ' . $e->getMessage());
+                return redirect()->back()->withErrors(['image' => 'Failed to upload image: ' . $e->getMessage()]);
+            }
+        }
+        
+        try {
+            // Cập nhật novel
+            $novel->update($updateData);
+            
+            // Cập nhật tags
+            $novel->tags()->sync($validateRequest['tags']);
+            
+            return redirect()->route('view-novel', $id)->with('success', 'Novel updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Failed to update novel: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['general' => 'Failed to update novel: ' . $e->getMessage()]);
+        }
     }
 
     /**

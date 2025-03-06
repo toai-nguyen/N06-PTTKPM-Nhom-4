@@ -36,9 +36,10 @@
 }
 
 .popular-novel-image {
-    width: 15vw;
+    max-width: 15vw;
     height: 100%;
     padding-right: 1rem;
+    overflow: hidden;
 }
 
 .popular-novel-image img {

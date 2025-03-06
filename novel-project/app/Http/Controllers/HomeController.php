@@ -36,11 +36,6 @@ class HomeController extends Controller
     {
         return Inertia::render('Content/AdvancedSearch');
     }
-
-    public function createProject()
-    {
-        return Inertia::render('Content/CreateProject');
-    }
     //show all user projects
     public function listProject()
     {
