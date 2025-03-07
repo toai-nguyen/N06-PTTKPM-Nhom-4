@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/react";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 
-export default function NothingToShow({ isAuthor }) {
+export default function NothingToShow({ isAuthor, novelId }) {
     return (
         <div className="bg-accent nothing-to-show h-full flex items-center justify-center p-4">
             {isAuthor ? (
@@ -17,7 +17,7 @@ export default function NothingToShow({ isAuthor }) {
                     />
                     <div className="flex flex-row items-center justify-center">
                         <p className="text-center">Write your first chapter</p>
-                        <Link href="/" style={{ paddingLeft: "1rem" }}>
+                        <Link href={route("chapter.create", novelId )} style={{ paddingLeft: "1rem" }}>
                             <SecondaryButton>Write</SecondaryButton>
                         </Link>
                     </div>

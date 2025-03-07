@@ -3,7 +3,7 @@ import NothingToShow from "../NothingToShow";
 import ChapterCard from "../ChapterCard";
 import Header from "../Header";
 
-export default function ListChapter({chapters, isAuthor}) {
+export default function ListChapter({chapters, isAuthor, novelId}) {
     const len = chapters.length;
 
     return (
@@ -20,7 +20,7 @@ export default function ListChapter({chapters, isAuthor}) {
                     ))}
                 </div>
             ) : (
-                <NothingToShow isAuthor = {isAuthor} />
+                <NothingToShow isAuthor = {isAuthor} novelId={novelId} />
             )}
         </div>
     );

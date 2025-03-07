@@ -5,12 +5,13 @@ import DangerButton from "../DangerButton";
 import DeleteNovelsForm from "./DeleteNovelsForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import UserAvatar from "../UserAvatar";
 
 export default function AuthorInfo({ novel, isAuthor, auth }) {
     const [isFollowing, setIsFollowing] = useState(false);
     const [followersCount, setFollowersCount] = useState(novel.followers);
     const [loading, setLoading] = useState(false);
-
+    console.log("novel", novel);
     // Kiểm tra trạng thái follow khi component được render
     useEffect(() => {
         // Chỉ kiểm tra nếu người dùng đã đăng nhập và không phải tác giả
@@ -53,7 +54,9 @@ export default function AuthorInfo({ novel, isAuthor, auth }) {
             <h3 className="text-lg font-bold mb-3">Author</h3>
             
             <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                <div className="w-10 h-10 rounded-full mr-3">
+                    <UserAvatar src={novel.avatar_url} />
+                </div>
                 <span className="font-medium">{novel.author_name}</span>
             </div>
             

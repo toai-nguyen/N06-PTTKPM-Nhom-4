@@ -5,6 +5,7 @@ import { router } from '@inertiajs/react';
 import { useState } from 'react';
 export default function EditChapter({ chapter, novelId }) {
     const { chapter_number } = chapter;
+    console.log("chapter", chapter_number);
     const [processing, setProcessing] = useState(false);
     const handleSubmit = (data) => {
         setProcessing(true);

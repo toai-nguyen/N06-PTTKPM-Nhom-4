@@ -167,6 +167,7 @@ class NovelController extends Controller
                 return ['id' => $tag->id, 'name' => $tag->tag_name];
             }),
             'author_name' => $rawNovel->user->name,
+            'avatar_url' => $rawNovel->user->avatar_url,
             'chapters' => $rawNovel->chapters->map(function ($chapter) {
                 return [
                     'id' => $chapter->id,

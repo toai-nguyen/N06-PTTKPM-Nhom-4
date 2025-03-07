@@ -5,12 +5,13 @@ import NovelsCardMD from "@/Components/NovelsCardMD";
 import Pagination from "@/Components/Pagination";
 import NothingToShow from "@/Components/NothingToShow";
 export default function UserDetail({ user, novels }) {
+    // console.log("user", user);
     return (
         <ParentsLayout>
             <div>
                 <Header title={`Author: ${user.name}`} />
                 <UserAvatar
-                    src={user.avatar_url}
+                    src={user.avatar}
                     alt={user.name}
                     className="w-40 h-40"
                 />

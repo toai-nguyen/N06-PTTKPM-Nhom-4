@@ -2,7 +2,6 @@ import { Link } from "@inertiajs/react";
 import "../../css/components/NovelsCard.css";
 
 export default function NovelsCard({ novel }) {
-    console.log(novel);
     return (
         <div className="flex gap-2">
             <div style={{ height: "80px", minWidth: "56px", maxWidth: "56px" }}>

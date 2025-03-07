@@ -17,11 +17,18 @@ export default function ChapterForm({
 }) {
     // Renamed processing prop to submitting to avoid conflict with useForm's processing
     const quillRef = useRef();
-    
+    console.log("chapter number before", chapterNumber);
+    // if(isEdit === false && chapterNumber > 1) {
+    //     chapterNumber = chapterNumber + 1;
+    // }
+    // else if( isEdit === false && chapterNumber === 1) {
+    //     chapterNumber = 1;
+    // }
+    console.log("chapter number now", chapterNumber);
     const { data, setData, errors, processing } = useForm({
         title: chapter?.title || "",
         content: chapter?.content || "",
-        chapter_number: chapter? chapter.chapter_number : (chapterNumber + 1),
+        chapter_number: chapterNumber,
         novel_id: chapter?.novel_id || novelId,
     });
 
@@ -63,11 +70,16 @@ export default function ChapterForm({
         }
     };
 
+    // Hiển thị nhãn chapter dựa trên số chương
+    const chapterLabel = isEdit 
+        ? `Chapter ${chapterNumber}` 
+        : `Chapter ${chapterNumber}`;
+
     return (
         <div className="max-w-4xl mx-auto py-6">
             <form onSubmit={handleSubmit}>
                 <div className="mb-6">
-                    <InputLabel htmlFor="title" value={`Chapter ${isEdit ? chapterNumber : chapterNumber + 1}`} />
+                    <InputLabel htmlFor="title" value={chapterLabel} />
                     <TextInput
                         id="title"
                         type="text"
