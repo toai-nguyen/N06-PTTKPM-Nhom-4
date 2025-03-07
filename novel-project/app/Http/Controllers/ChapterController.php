@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Chapter;
 use App\Models\Novel;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use PgSql\Lob;
 
 class ChapterController extends Controller
 {
@@ -32,7 +35,7 @@ class ChapterController extends Controller
         $lastChapter = Chapter::where('novel_id', $novel_id)
             ->orderBy('chapter_number', 'desc')
             ->first();
-        $chapter_number = $lastChapter ? $lastChapter->chapter_number + 1 : 1;
+        $chapter_number = $lastChapter ? $lastChapter->chapter_number : 1;
         // return only chapter number 
         return Inertia::render('Content/CreateChapter', [
             'chapterNumber' => $chapter_number,
@@ -43,7 +46,7 @@ class ChapterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $novelId)
     {
         $validated = request()->validate([
             'title' => 'required',
@@ -51,6 +54,7 @@ class ChapterController extends Controller
             'novel_id' => 'required',
             'chapter_number' => 'required|numeric',
         ]);
+        // Log::info($validated);
         $existingChapter = Chapter::where('novel_id', $validated['novel_id'])
         ->where('chapter_number', $validated['chapter_number'])
         ->first();
@@ -68,7 +72,14 @@ class ChapterController extends Controller
             'author_id' => Auth::user()->id,
             'chapter_number' => $validated['chapter_number'],
         ]);
+        Log::info($chapter);
         $novel->increment('number_of_chapters');
+            // Gửi thông báo cho tất cả người theo dõi
+        $followers = $novel->followers()->get();
+        
+        foreach ($followers as $follower) {
+            $follower->notify(new \App\Notifications\NewChapterNotification($chapter));
+        }
         return redirect()->route('view-novel', $novel->id)->with('success', 'Chapter created successfully.');
     }
 
@@ -112,17 +123,46 @@ class ChapterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $novel_id, string $chapter_id)
     {
-        //
+        //return content and title of the chapter
+        $chapterData = Chapter::where('id', $chapter_id)
+            ->where('novel_id', $novel_id)
+            ->first();
+        if (!$chapterData) {
+            return redirect()->route('home')->with('error', 'Chapter not found.');
+        }
+        $chapter = [
+            'id' => $chapterData->id,
+            'novel_id' => $chapterData->novel_id,
+            'title' => $chapterData->title,
+            'content' => $chapterData->content,
+            'chapter_number' => $chapterData->chapter_number,
+        ];
+        return Inertia::render('Content/EditChapter' , [
+            'chapter' => $chapter,
+            'novelId' => $novel_id,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(string $novel_id, string $chapter_id)
     {
-        //
+        $validated = request()->validate([
+            'title' => 'required',
+            'content' => 'required',
+        ]);
+        $chapter = Chapter::find($chapter_id);
+        if (!$chapter) {
+            return redirect()->route('home')->with('error', 'Chapter not found.');
+        }
+        $chapter->update([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+        ]);
+        return redirect()->route('view-novel', $novel_id)->with('success', 'Chapter updated successfully.');
     }
 
     /**

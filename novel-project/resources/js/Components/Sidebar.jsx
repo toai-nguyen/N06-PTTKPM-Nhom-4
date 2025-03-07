@@ -48,7 +48,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                         <li className={`${getItemClass("following")} mb-2`}>
                             <Link href={route("following")}>Following</Link>
                         </li>
-                        <li className={`${getItemClass("advanced-search")} mb-2`}>
+                        <li className={`${getItemClass("advanced_search")} mb-2`}>
                             <Link href={route("advanced-search")}>
                                 Advanced Search
                             </Link>

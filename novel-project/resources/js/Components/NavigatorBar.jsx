@@ -4,15 +4,50 @@ import TextInput from "./TextInput";
 import UserAvatar from "./UserAvatar";
 import { React, useState, useEffect } from "react";
 import ApplicationLogo from "./ApplicationLogo";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import Dropdown from "./Dropdown";
 import { CgDetailsMore } from "react-icons/cg";
+import { IoMdNotifications } from "react-icons/io";
 import image from "../../../public/image/default_avatar.jpg";
 import "../../css/components/NavigatorBar.css";
 
-export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar, removeFixed = false }) {
+export default function NavigatorBar({
+    auth,
+    userName,
+    isOpen,
+    toggleSidebar,
+    removeFixed = false,
+}) {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
+    // Thêm state cho số thông báo
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    // Thêm useEffect để lấy số thông báo chưa đọc
+    useEffect(() => {
+        if (auth.user) {
+            const fetchUnreadCount = () => {
+                axios
+                    .get(route("notifications.unread-count"))
+                    .then((response) => {
+                        setUnreadCount(response.data.count);
+                    })
+                    .catch((error) =>
+                        console.error("Error fetching unread count:", error)
+                    );
+            };
+
+            fetchUnreadCount();
+
+            // Poll cho số thông báo mới mỗi phút
+            const interval = setInterval(fetchUnreadCount, 60000);
+
+            return () => {
+                clearInterval(interval);
+            };
+        }
+    }, [auth.user]);
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 0) {
@@ -27,7 +62,14 @@ export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar, re
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
-    
+
+    //add search function
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            router.visit(route("search", { search: searchQuery.trim() }));
+        }
+    };
     return (
         <nav
             className={`
@@ -58,13 +100,25 @@ export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar, re
                         >
                             <CgDetailsMore size={20} />
                         </button>
-                        <Link href={route("home")}><ApplicationLogo className="h-10" /></Link>
+                        <Link href={route("home")}>
+                            <ApplicationLogo className="h-10" />
+                        </Link>
                     </div>
                 )}
 
                 <div className="flex-grow"></div>
 
-                <TextInput className="text-input" placeholder="Search" />
+                <form
+                    onSubmit={handleSearch}
+                    className="relative flex items-center"
+                >
+                    <TextInput
+                        className="text-input pr-10"
+                        placeholder="Search novels..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </form>
 
                 {auth.user ? (
                     <div className="flex items-center bg-white space-x-4">
@@ -90,6 +144,17 @@ export default function NavigatorBar({ auth, userName, isOpen, toggleSidebar, re
                                 </Dropdown.Link>
                             </Dropdown.Content>
                         </Dropdown>
+                        <Link
+                            href={route("notifications")}
+                            className="relative"
+                        >
+                            <IoMdNotifications size={30} />
+                            {unreadCount > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold rounded-full px-2">
+                                    {unreadCount}
+                                </span>
+                            )}
+                        </Link>
                     </div>
                 ) : (
                     <div className="flex items-center space-x-4">

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Tag; 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
+use App\Models\Chapter;
 
 class NovelController extends Controller
 {
@@ -18,7 +18,7 @@ class NovelController extends Controller
      */
     public function index()
     {
-        //home page: show top 5 novels with most followers, 12 latest novels, 15 random novels
+        //home page: show top 5 novels with most followers, 15 random novels
         $topNovels = Novel::with('tags', 'user')
         ->orderBy('followers', 'desc')
         ->take(5)
@@ -36,18 +36,33 @@ class NovelController extends Controller
             ];
         });
 
-
-        $lastestNovels = Novel::orderBy('created_at', 'desc')
+        $latestChapters = Chapter::with('novel', 'novel.user')
+        ->orderBy('updated_at', 'desc')
         ->take(12)
         ->get()
-        ->map(function ($novel){
+        ->map(function ($chapter) {
             return [
-                'id' => $novel->id,
-                'title' => $novel->title,
-                'image_url' => $novel->image_url,
-                'author_name' => $novel->user->name,
+                'chapter_id' => $chapter->id,
+                'chapter_number' => $chapter->chapter_number,
+                'novel_id' => $chapter->novel->id,
+                'title' => $chapter->novel->title,
+                'image_url' => $chapter->novel->image_url,
+                'author_name' => $chapter->novel->user->name,
             ];
         });
+        //find 12 novels with the lastest chapter updated
+
+        // $lastestNovels = Novel::orderBy('created_at', 'desc')
+        // ->take(12)
+        // ->get()
+        // ->map(function ($novel){
+        //     return [
+        //         'id' => $novel->id,
+        //         'title' => $novel->title,
+        //         'image_url' => $novel->image_url,
+        //         'author_name' => $novel->user->name,
+        //     ];
+        // });
         $randomNovels = Novel::inRandomOrder()->take(15)->get()
         ->map(function ($novel){
             return [
@@ -59,7 +74,7 @@ class NovelController extends Controller
         });
         return Inertia::render('Home', [
             'topNovels' => $topNovels, 
-            'lastestNovels' => $lastestNovels,
+            'latestChapters' => $latestChapters,
             'randomNovels' => $randomNovels]);
     }
 

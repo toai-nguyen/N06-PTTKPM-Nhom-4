@@ -17,8 +17,8 @@ class ChapterFactory extends Factory
     public function definition(): array
     {
         return [
-            'novel_id' => '33',
-            'author_id' => '39',
+            'novel_id' => '2',
+            'author_id' => '59',
             'title' => $this->faker->sentence(),
             'content' => $this->faker->paragraphs(5, true),
             'chapter_number' => $this->faker->unique->numberBetween(1, 10),

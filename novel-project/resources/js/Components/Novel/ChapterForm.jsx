@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import TextInput from '@/Components/TextInput';
@@ -6,15 +5,23 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
+import { useRef } from 'react';
 
-export default function ChapterForm({ chapterNumber, novelId, chapter, onSubmit, processing: submitting = false }) {
+export default function ChapterForm({ 
+    chapterNumber, 
+    novelId, 
+    chapter, 
+    onSubmit, 
+    processing: submitting = false,
+    isEdit = false
+}) {
     // Renamed processing prop to submitting to avoid conflict with useForm's processing
     const quillRef = useRef();
     
     const { data, setData, errors, processing } = useForm({
         title: chapter?.title || "",
         content: chapter?.content || "",
-        chapter_number: chapterNumber,
+        chapter_number: chapter? chapter.chapter_number : (chapterNumber + 1),
         novel_id: chapter?.novel_id || novelId,
     });
 
@@ -60,7 +67,7 @@ export default function ChapterForm({ chapterNumber, novelId, chapter, onSubmit,
         <div className="max-w-4xl mx-auto py-6">
             <form onSubmit={handleSubmit}>
                 <div className="mb-6">
-                    <InputLabel htmlFor="title" value={`Chapter ${chapterNumber}`} />
+                    <InputLabel htmlFor="title" value={`Chapter ${isEdit ? chapterNumber : chapterNumber + 1}`} />
                     <TextInput
                         id="title"
                         type="text"
@@ -90,7 +97,10 @@ export default function ChapterForm({ chapterNumber, novelId, chapter, onSubmit,
 
                 <div className="flex items-center justify-end mt-8">
                     <PrimaryButton className="ml-4" disabled={processing || submitting}>
-                        {processing || submitting ? 'In progress...' : 'Add new chapter'}
+                        {processing || submitting ? 
+                            isEdit ? 'Updating...' : 'In progress...':
+                            isEdit ? 'Update chapter': 'Add new chapter'
+                        }
                     </PrimaryButton>
                 </div>
             </form>

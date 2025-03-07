@@ -1,5 +1,6 @@
 import { MdModeEditOutline } from "react-icons/md";
 import "../../css/components/ChapterCard.css";
+import { Link } from "@inertiajs/react";
 export default function ChapterCard({chapter, isAuthor}) {
     return (
         <div className="flex bg-accent m-2 p-2 chapter-card chapter-card" >
@@ -11,9 +12,11 @@ export default function ChapterCard({chapter, isAuthor}) {
             </span>
             <div className="flex">
                 {isAuthor && (
-                    <div className="flex">
-                        <button><MdModeEditOutline className="ml-2 author-button"/></button>
-                    </div>
+                    <Link
+                        href={route("chapter.edit", {novel_id: chapter.novel_id, chapter_id: chapter.id})}
+                    >
+                        <MdModeEditOutline className="ml-2 author-button"/>
+                    </Link>
                 )}
             </div>
         </div>

@@ -10,7 +10,7 @@ export default function ProjectDetail({auth, novel, isAuthor}) {
                 <PopularNovelsCard novel={novel} />
                 <div className="novel-infomation flex flex-row" style={{marginBottom: '3rem'}}>
                     <ListChapter chapters={novel.chapters} isAuthor={isAuthor}/>
-                    <AuthorInfo novel = {novel} isAuthor = {isAuthor} />
+                    <AuthorInfo novel = {novel} isAuthor = {isAuthor} auth={auth}/>
                 </div>
                 <Comment />
             </div>
