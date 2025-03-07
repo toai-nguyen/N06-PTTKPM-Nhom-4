@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -39,7 +41,41 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit');
     }
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar' => ['required', 'image'],
+        ]);
+        Log::info($request->file('avatar'));
+        $user = $request->user();
+        try{
+            if ($user->avatar_public_id) {
+                Cloudinary::destroy($user->avatar_public_id);
+            }
 
+            $image = $request->file('avatar');
+            Log::info($image);
+            $cloudinaryImage = cloudinary()->upload($image->getRealPath(), [
+                'folder' => 'novel_project/user_avatar',
+                'transformation' => [
+                    'width' => 500,
+                    'height' => 500,
+                    'crop' => 'fill',
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto',
+                ],
+            ]);
+            $url = $cloudinaryImage->getSecurePath();
+            $public_id = $cloudinaryImage->getPublicId();
+            $user->avatar_url = $url;
+            $user->avatar_public_id = $public_id;
+            $user->save();
+        } catch (\Exception $e) {
+            return Redirect::back()->with('error', 'An error occurred while uploading the image.');
+        }
+
+        return Redirect::route('profile.edit')->with('message', 'Avatar updated successfully.');
+    }
     /**
      * Delete the user's account.
      */

@@ -45,6 +45,7 @@ class NovelController extends Controller
                 'chapter_id' => $chapter->id,
                 'chapter_number' => $chapter->chapter_number,
                 'novel_id' => $chapter->novel->id,
+                'author_id' => $chapter->novel->author_id,
                 'title' => $chapter->novel->title,
                 'image_url' => $chapter->novel->image_url,
                 'author_name' => $chapter->novel->user->name,

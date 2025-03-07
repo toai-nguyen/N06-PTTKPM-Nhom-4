@@ -125,8 +125,8 @@ export default function NavigatorBar({
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <UserAvatar
-                                    src={image}
-                                    alt={userName}
+                                    src={auth.user.avatar_url}
+                                    alt={auth.user.name}
                                     className="h-10 w-10 cursor-pointer"
                                 />
                             </Dropdown.Trigger>

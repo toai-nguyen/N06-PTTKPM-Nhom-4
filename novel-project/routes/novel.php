@@ -37,6 +37,3 @@ Route::delete('/novels/delete/{id}', [NovelController::class, 'destroy'])->name(
 Route::get('/novels', [NovelController::class, 'index'])->name('list-novel');
 //sort novel using advanced search
 Route::get('/novels/search', [NovelController::class, 'search'])->name('search-novel');
-
-
-

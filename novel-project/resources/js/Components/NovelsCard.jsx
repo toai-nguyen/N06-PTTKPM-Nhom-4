@@ -2,6 +2,7 @@ import { Link } from "@inertiajs/react";
 import "../../css/components/NovelsCard.css";
 
 export default function NovelsCard({ novel }) {
+    console.log(novel);
     return (
         <div className="flex gap-2">
             <div style={{ height: "80px", minWidth: "56px", maxWidth: "56px" }}>
@@ -28,7 +29,7 @@ export default function NovelsCard({ novel }) {
                     </p>
                 </Link>
                 {/* Link to the author */}
-                <Link href="">
+                <Link href= {route("view-user", novel.author_id)} >
                     <p
                         className="line-clamp-1 font-montserrat"
                         style={{ fontWeight: "500" }}
@@ -40,3 +41,4 @@ export default function NovelsCard({ novel }) {
         </div>
     );
 }
+// href={route("view-user", novel.author_id)}
